@@ -1,0 +1,763 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <style>
+      :root {
+        color-scheme: light;
+        box-sizing: border-box;
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+      }
+      html {
+        scroll-padding-top: env(safe-area-inset-top, 0px);
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        font:
+          14px -apple-system,
+          BlinkMacSystemFont,
+          sans-serif;
+        background: #fff;
+        color: #000;
+      }
+      img {
+        max-width: 100%;
+      }
+      [hidden]:not([hidden="until-found" i]) {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <meta name="claude:viewport-fit-sides" content="cover" />
+    <title>Tamilvanan Sambasivam</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap"
+    />
+    <style>
+      /* Layout: one column of frosted panels floating over a fixed aurora; mono labels borrowed from a terminal. */
+      :root {
+        --bg: #06101a;
+        --fg: #e9f1f4;
+        --fg-dim: rgba(233, 241, 244, 0.68);
+        --fg-faint: rgba(233, 241, 244, 0.44);
+        --glass: rgba(255, 255, 255, 0.055);
+        --glass-hi: rgba(255, 255, 255, 0.1);
+        --stroke: rgba(255, 255, 255, 0.14);
+        --sheen: rgba(255, 255, 255, 0.16);
+        --shadow: 0 20px 44px rgba(0, 0, 0, 0.42);
+        --accent: #f2b25c;
+        --accent-2: #63d6c6;
+        --blob-1: #0f6f78;
+        --blob-2: #1b4a86;
+        --blob-3: #8a5a16;
+        --blob-a: 0.7;
+        --font-display:
+          "Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
+        --font-body: "Public Sans", "Helvetica Neue", Arial, sans-serif;
+        --font-mono:
+          "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+        color-scheme: dark;
+      }
+      @media (prefers-color-scheme: light) {
+        :root:not([data-theme="dark"]) {
+          --bg: #e8eeee;
+          --fg: #0a171b;
+          --fg-dim: rgba(10, 23, 27, 0.7);
+          --fg-faint: rgba(10, 23, 27, 0.5);
+          --glass: rgba(255, 255, 255, 0.46);
+          --glass-hi: rgba(255, 255, 255, 0.68);
+          --stroke: rgba(10, 23, 27, 0.12);
+          --sheen: rgba(255, 255, 255, 0.85);
+          --shadow: 0 18px 40px rgba(10, 40, 50, 0.14);
+          --accent: #8a5407;
+          --accent-2: #0b7b70;
+          --blob-1: #79d8d2;
+          --blob-2: #9dc0ef;
+          --blob-3: #f3cf93;
+          --blob-a: 0.85;
+          color-scheme: light;
+        }
+      }
+      :root[data-theme="light"] {
+        --bg: #e8eeee;
+        --fg: #0a171b;
+        --fg-dim: rgba(10, 23, 27, 0.7);
+        --fg-faint: rgba(10, 23, 27, 0.5);
+        --glass: rgba(255, 255, 255, 0.46);
+        --glass-hi: rgba(255, 255, 255, 0.68);
+        --stroke: rgba(10, 23, 27, 0.12);
+        --sheen: rgba(255, 255, 255, 0.85);
+        --shadow: 0 18px 40px rgba(10, 40, 50, 0.14);
+        --accent: #8a5407;
+        --accent-2: #0b7b70;
+        --blob-1: #79d8d2;
+        --blob-2: #9dc0ef;
+        --blob-3: #f3cf93;
+        --blob-a: 0.85;
+        color-scheme: light;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        background: var(--bg);
+        color: var(--fg);
+        font-family: var(--font-body);
+        font-size: 16px;
+        line-height: 1.6;
+        margin: 0;
+        overflow-x: hidden;
+      }
+
+      /* --- aurora backdrop --- */
+      .aurora {
+        position: fixed;
+        inset: -25%;
+        z-index: -1;
+        filter: blur(90px);
+        pointer-events: none;
+      }
+      .aurora i {
+        position: absolute;
+        display: block;
+        border-radius: 50%;
+        opacity: var(--blob-a);
+      }
+      .aurora i:nth-child(1) {
+        width: 62vmax;
+        height: 62vmax;
+        left: -14vmax;
+        top: -18vmax;
+        background: var(--blob-1);
+        animation: drift-a 26s ease-in-out infinite alternate;
+      }
+      .aurora i:nth-child(2) {
+        width: 54vmax;
+        height: 54vmax;
+        right: -12vmax;
+        top: 8vmax;
+        background: var(--blob-2);
+        animation: drift-b 31s ease-in-out infinite alternate;
+      }
+      .aurora i:nth-child(3) {
+        width: 46vmax;
+        height: 46vmax;
+        left: 18vmax;
+        bottom: -16vmax;
+        background: var(--blob-3);
+        animation: drift-c 37s ease-in-out infinite alternate;
+      }
+      @keyframes drift-a {
+        to {
+          transform: translate3d(6vmax, 4vmax, 0) scale(1.12);
+        }
+      }
+      @keyframes drift-b {
+        to {
+          transform: translate3d(-7vmax, 6vmax, 0) scale(1.08);
+        }
+      }
+      @keyframes drift-c {
+        to {
+          transform: translate3d(5vmax, -5vmax, 0) scale(1.14);
+        }
+      }
+
+      /* --- shell --- */
+      .wrap {
+        max-width: 860px;
+        margin: 0 auto;
+        padding-left: max(16px, env(safe-area-inset-left, 0px));
+        padding-right: max(16px, env(safe-area-inset-right, 0px));
+        padding-block: clamp(28px, 7vw, 72px);
+        display: flex;
+        flex-direction: column;
+        gap: clamp(16px, 2.4vw, 24px);
+      }
+
+      /* --- glass --- */
+      .glass {
+        position: relative;
+        background: var(--glass);
+        border: 1px solid var(--stroke);
+        border-radius: 22px;
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(20px) saturate(165%);
+        -webkit-backdrop-filter: blur(20px) saturate(165%);
+        padding: clamp(20px, 3.4vw, 34px);
+        min-width: 0;
+      }
+      .glass::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto;
+        height: 1px;
+        border-radius: 22px 22px 0 0;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--sheen),
+          transparent
+        );
+        pointer-events: none;
+      }
+
+      /* --- type --- */
+      .eyebrow {
+        font-family: var(--font-mono);
+        font-size: 11.5px;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin: 0 0 14px;
+      }
+      h1 {
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: clamp(2.1rem, 7.4vw, 3.5rem);
+        line-height: 1.03;
+        letter-spacing: -0.025em;
+        text-wrap: balance;
+        margin: 0 0 10px;
+      }
+      h2 {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin: 0 0 18px;
+      }
+      h3 {
+        font-family: var(--font-display);
+        font-size: 1.07rem;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        margin: 0;
+      }
+      .role {
+        font-family: var(--font-display);
+        font-size: clamp(1rem, 3.2vw, 1.22rem);
+        font-weight: 500;
+        color: var(--accent-2);
+        margin: 0 0 16px;
+      }
+      .lede {
+        font-size: 1.02rem;
+        color: var(--fg-dim);
+        max-width: 60ch;
+        margin: 0 0 6px;
+      }
+      .motto {
+        font-family: var(--font-mono);
+        font-size: 13px;
+        color: var(--fg-faint);
+        margin: 14px 0 0;
+      }
+      .motto span {
+        color: var(--accent-2);
+      }
+      .muted {
+        color: var(--fg-dim);
+        margin: 2px 0 0;
+        font-size: 0.94rem;
+      }
+      .sub {
+        color: var(--fg-faint);
+        font-size: 0.86rem;
+        font-family: var(--font-mono);
+      }
+
+      /* --- contact --- */
+      .contact {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 22px;
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-family: var(--font-mono);
+        font-size: 12.5px;
+        padding: 8px 13px;
+        border-radius: 999px;
+        border: 1px solid var(--stroke);
+        background: var(--glass-hi);
+        color: var(--fg);
+        text-decoration: none;
+        cursor: pointer;
+        transition:
+          border-color 0.18s ease,
+          transform 0.18s ease;
+        min-width: 0;
+        max-width: 100%;
+        overflow-wrap: anywhere;
+      }
+      .chip:hover {
+        border-color: var(--accent);
+        transform: translateY(-1px);
+      }
+      .chip:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+      }
+      button.chip {
+        font: inherit;
+        font-family: var(--font-mono);
+        font-size: 12.5px;
+      }
+      .chip .tag {
+        color: var(--accent);
+        font-weight: 600;
+      }
+      .chip .ok {
+        color: var(--accent-2);
+      }
+
+      /* --- lists --- */
+      ul.points {
+        margin: 10px 0 0;
+        padding-left: 18px;
+        color: var(--fg-dim);
+      }
+      ul.points li {
+        margin-bottom: 7px;
+      }
+      .row {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+      .date {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: var(--fg-faint);
+        white-space: nowrap;
+      }
+
+      .stack {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+      .divider {
+        height: 1px;
+        background: var(--stroke);
+        border: 0;
+        margin: 0;
+      }
+
+      /* --- skills --- */
+      .skillset {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+      .skillset .label {
+        font-family: var(--font-mono);
+        font-size: 11.5px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--fg-faint);
+        margin: 0 0 10px;
+      }
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+      }
+      .tag-pill {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        padding: 5px 11px;
+        border-radius: 8px;
+        border: 1px solid var(--stroke);
+        background: var(--glass-hi);
+        color: var(--fg-dim);
+      }
+      .tag-pill.key {
+        color: var(--fg);
+        border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+      }
+
+      /* --- certs --- */
+      .certs {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .cert {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 12px;
+        flex-wrap: wrap;
+        padding: 11px 12px;
+        margin: 0 -12px;
+        border-radius: 12px;
+        text-decoration: none;
+        color: inherit;
+        transition: background 0.18s ease;
+      }
+      .cert:hover {
+        background: var(--glass-hi);
+      }
+      .cert:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: -2px;
+      }
+      .cert .name {
+        font-weight: 600;
+        min-width: 0;
+      }
+      .cert .name::after {
+        content: " ↗";
+        color: var(--accent);
+        font-size: 0.82em;
+        opacity: 0.75;
+      }
+      .cert .org {
+        color: var(--fg-faint);
+        font-weight: 400;
+      }
+
+      /* --- two-up --- */
+      .two {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: clamp(16px, 2.4vw, 24px);
+      }
+      @media (max-width: 620px) {
+        .two {
+          grid-template-columns: 1fr;
+        }
+        .cert {
+          flex-direction: column;
+          gap: 3px;
+        }
+        .cert .date {
+          font-size: 11.5px;
+        }
+      }
+      .two > * {
+        min-width: 0;
+      }
+
+      .langs {
+        display: flex;
+        gap: 28px;
+        flex-wrap: wrap;
+      }
+
+      footer {
+        text-align: center;
+        color: var(--fg-faint);
+        font-family: var(--font-mono);
+        font-size: 11.5px;
+        padding-block: 8px 4px;
+      }
+
+      /* --- entrance --- */
+      .wrap > * {
+        animation: rise 0.5s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+      }
+      .wrap > *:nth-child(2) {
+        animation-delay: 0.05s;
+      }
+      .wrap > *:nth-child(3) {
+        animation-delay: 0.09s;
+      }
+      .wrap > *:nth-child(4) {
+        animation-delay: 0.13s;
+      }
+      .wrap > *:nth-child(5) {
+        animation-delay: 0.17s;
+      }
+      .wrap > *:nth-child(6) {
+        animation-delay: 0.2s;
+      }
+      @keyframes rise {
+        from {
+          opacity: 0.001;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
+    </style>
+
+    <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+
+    <main class="wrap">
+      <header class="glass">
+        <p class="eyebrow">Kumbakonam · Tamil Nadu · India</p>
+        <h1>Tamilvanan Sambasivam</h1>
+        <p class="role">Cyber Security &amp; Software</p>
+        <p class="motto"><span>&gt;</span> try, err and improve</p>
+
+        <div class="contact">
+          <button
+            class="chip"
+            type="button"
+            data-copy="tamilvanansambasivam@gmail.com"
+          >
+            <span class="tag">mail</span
+            ><span class="txt">tamilvanansambasivam@gmail.com</span>
+          </button>
+          <button class="chip" type="button" data-copy="+91 63825 03199">
+            <span class="tag">tel</span><span class="txt">+91 63825 03199</span>
+          </button>
+          <a
+            class="chip"
+            href="https://github.com/tamilvanansambasivam"
+            target="_blank"
+            rel="noopener"
+          >
+            <span class="tag">git</span>github.com/tamilvanansambasivam
+          </a>
+          <a
+            class="chip"
+            href="https://linkedin.com/in/tamilvanansambasivam"
+            target="_blank"
+            rel="noopener"
+          >
+            <span class="tag">in</span>linkedin.com/in/tamilvanansambasivam
+          </a>
+        </div>
+      </header>
+
+      <section class="glass">
+        <h2>Experience</h2>
+        <div class="row">
+          <h3>Hands-on Security Learning</h3>
+          <span class="date">2025 — 2026</span>
+        </div>
+        <p class="sub">TryHackMe · self-directed practice</p>
+        <ul class="points">
+          <li>
+            Completed structured cybersecurity labs covering web security,
+            networking, Linux, Windows, reconnaissance, and related security
+            fundamentals.
+          </li>
+          <li>
+            Used documentation, hints, and AI assistance when needed to
+            understand problems and complete practical exercises.
+          </li>
+        </ul>
+      </section>
+
+      <section class="glass">
+        <h2>Skills</h2>
+        <div class="skillset">
+          <div>
+            <p class="label">Programming</p>
+            <div class="tags">
+              <span class="tag-pill key">C</span
+              ><span class="tag-pill key">C++</span>
+              <span class="tag-pill key">Python</span
+              ><span class="tag-pill key">JavaScript</span>
+              <span class="tag-pill key">Bash</span
+              ><span class="tag-pill">HTML</span
+              ><span class="tag-pill">CSS</span>
+            </div>
+          </div>
+          <hr class="divider" />
+          <div>
+            <p class="label">Foundation</p>
+            <div class="tags">
+              <span class="tag-pill">HTTP/HTTPS</span
+              ><span class="tag-pill">Web fundamentals</span>
+              <span class="tag-pill">TCP/IP</span
+              ><span class="tag-pill">DNS</span>
+              <span class="tag-pill">Linux</span
+              ><span class="tag-pill">Reconnaissance</span>
+              <span class="tag-pill">Web security concepts</span>
+            </div>
+          </div>
+          <hr class="divider" />
+          <div>
+            <p class="label">Lab exposure</p>
+            <div class="tags">
+              <span class="tag-pill">Nmap</span
+              ><span class="tag-pill">Burp Suite</span>
+              <span class="tag-pill">Wireshark</span
+              ><span class="tag-pill">Metasploit</span>
+              <span class="tag-pill">Windows</span
+              ><span class="tag-pill">Active Directory</span>
+              <span class="tag-pill">SQL injection</span
+              ><span class="tag-pill">Content discovery</span>
+              <span class="tag-pill">Web server enumeration</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="glass">
+        <h2>Certifications</h2>
+        <div class="certs">
+          <a
+            class="cert"
+            target="_blank"
+            rel="noopener"
+            href="https://tryhackme-certificates.s3-eu-west-1.amazonaws.com/THM-IVH8SCXVNN.pdf"
+          >
+            <span class="name"
+              >Pre Security <span class="org">· TryHackMe</span></span
+            ><span class="date">Aug 2026</span>
+          </a>
+          <a
+            class="cert"
+            target="_blank"
+            rel="noopener"
+            href="https://tryhackme-certificates.s3-eu-west-1.amazonaws.com/THM-CUFNR5YIQP.pdf"
+          >
+            <span class="name"
+              >Web Fundamentals (Legacy)
+              <span class="org">· TryHackMe</span></span
+            ><span class="date">May 2026</span>
+          </a>
+          <a
+            class="cert"
+            target="_blank"
+            rel="noopener"
+            href="https://tryhackme-certificates.s3-eu-west-1.amazonaws.com/THM-IDXOBYLQHL.pdf"
+          >
+            <span class="name"
+              >Cyber Security 101 <span class="org">· TryHackMe</span></span
+            ><span class="date">Mar 2025</span>
+          </a>
+          <a
+            class="cert"
+            target="_blank"
+            rel="noopener"
+            href="https://tryhackme-certificates.s3-eu-west-1.amazonaws.com/THM-H8GY0MWAIL.pdf"
+          >
+            <span class="name"
+              >Pre Security (Legacy) <span class="org">· TryHackMe</span></span
+            ><span class="date">Jan 2025</span>
+          </a>
+        </div>
+      </section>
+
+      <div class="two">
+        <section class="glass">
+          <h2>Education</h2>
+          <div class="stack">
+            <div>
+              <h3>Master of Computer Application</h3>
+              <p class="muted">Annai College of Arts and Science, Kumbakonam</p>
+            </div>
+            <div>
+              <h3>B.Sc. Physics</h3>
+              <p class="muted">
+                Government Arts College (Autonomous), Kumbakonam
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="glass">
+          <h2>Languages</h2>
+          <div class="langs">
+            <div>
+              <h3>Tamil</h3>
+              <p class="sub">Native</p>
+            </div>
+            <div>
+              <h3>English</h3>
+              <p class="sub">Fluent</p>
+            </div>
+          </div>
+          <hr class="divider" style="margin: 20px 0" />
+          <p
+            class="label"
+            style="
+              font-family: var(--font-mono);
+              font-size: 11.5px;
+              letter-spacing: 0.1em;
+              text-transform: uppercase;
+              color: var(--fg-faint);
+              margin: 0 0 10px;
+            "
+          >
+            Interests
+          </p>
+          <div class="tags">
+            <span class="tag-pill">Reading</span
+            ><span class="tag-pill">Writing</span>
+            <span class="tag-pill">Mathematics</span
+            ><span class="tag-pill">Computers</span>
+            <span class="tag-pill">Talking</span>
+          </div>
+        </section>
+      </div>
+
+      <footer>Tamilvanan Sambasivam · Kumbakonam, Tamil Nadu</footer>
+    </main>
+
+    <script>
+      document.querySelectorAll("[data-copy]").forEach(function (btn) {
+        var label = btn.querySelector(".txt");
+        var original = label ? label.textContent : "";
+        btn.addEventListener("click", function () {
+          var value = btn.getAttribute("data-copy");
+          function done() {
+            if (!label) return;
+            label.textContent = "copied";
+            label.classList.add("ok");
+            setTimeout(function () {
+              label.textContent = original;
+              label.classList.remove("ok");
+            }, 1400);
+          }
+          function fallback() {
+            var r = document.createRange();
+            if (label) {
+              r.selectNodeContents(label);
+              var s = window.getSelection();
+              s.removeAllRanges();
+              s.addRange(r);
+            }
+          }
+          try {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              navigator.clipboard.writeText(value).then(done, fallback);
+            } else {
+              fallback();
+            }
+          } catch (e) {
+            fallback();
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
